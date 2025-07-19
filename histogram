@@ -1,0 +1,81 @@
+from  numpy import linalg
+from numpy import linspace
+from numpy import meshgrid
+import random
+import math
+import numpy as np
+import matplotlib
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+def create_histogram(data, title, xlabel, ylabel, bins=10):
+    """
+    Creates and displays a histogram for the given data.
+
+    Args:
+        data (array-like): The data to visualize.
+        title (str): The title of the histogram.
+        xlabel (str): The label for the x-axis.
+        ylabel (str): The label for the y-axis (usually 'Frequency' or 'Count').
+        bins (int, optional): The number of bins for the histogram. Defaults to 10.
+    """
+    print(f"Creating histogram for '{title}'...")
+    plt.figure(figsize=(10, 6)) # Set figure size for better readability
+    
+    # Use seaborn's histplot for a more aesthetically pleasing histogram
+    sns.histplot(data, bins=bins, kde=True, color='skyblue', edgecolor='black')
+    
+    plt.title(title, fontsize=16)
+    plt.xlabel(xlabel, fontsize=14)
+    plt.ylabel(ylabel, fontsize=14)
+    plt.grid(axis='y', alpha=0.75) # Add a grid for easier reading of frequencies
+    plt.xticks(fontsize=12)
+    plt.yticks(fontsize=12)
+    plt.tight_layout() # Adjust layout to prevent labels from overlapping
+    plt.show()
+    print("Histogram displayed successfully.")
+
+def main():
+    """Main function to generate sample data and create a histogram."""
+    print("--- Starting Histogram Generation ---")
+
+    # --- Generate Sample Data ---
+    # Example 1: Distribution of Ages (continuous variable)
+    np.random.seed(42) # for reproducibility
+    ages = np.random.normal(loc=35, scale=10, size=1000) # Mean age 35, std dev 10
+    ages = np.clip(ages, 18, 80) # Clip ages to a realistic range
+    print(f"\nGenerated {len(ages)} sample ages. First 5: {ages[:5].round(2)}")
+
+    # Example 2: Distribution of Genders (categorical variable - represented numerically)
+    # 0 for Female, 1 for Male
+    genders = np.random.choice([0, 1], size=1000, p=[0.55, 0.45]) # 55% Female, 45% Male
+    print(f"Generated {len(genders)} sample genders. First 5: {genders[:5]}")
+
+    # --- Create Histograms ---
+
+    # Histogram for Ages
+    create_histogram(
+        data=ages,
+        title='Distribution of Ages in Population',
+        xlabel='Age',
+        ylabel='Frequency',
+        bins=20 # More bins for continuous data
+    )
+
+    # Histogram for Genders (treating as categorical, but histplot can handle it)
+    # For categorical data, a bar plot is often more appropriate, but a histogram
+    # can show counts per category if bins are set appropriately.
+    # Here, we'll use a small number of bins to clearly show two categories.
+    create_histogram(
+        data=genders,
+        title='Distribution of Genders in Population',
+        xlabel='Gender (0=Female, 1=Male)',
+        ylabel='Count',
+        bins=[-0.5, 0.5, 1.5] # Bins to center around 0 and 1
+    )
+    print("\n--- Histogram Generation Completed ---")
+
+if __name__ == "__main__":
+    main()
+
+print("Try programiz.pro")
